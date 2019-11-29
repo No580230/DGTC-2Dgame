@@ -15,6 +15,9 @@ public class Play : MonoBehaviour
     [Header("2D 剛體")]
     public Rigidbody2D r2d;
     public Animator ani;
+    [Header("音效區域")]
+    public AudioSource aud;
+    public AudioClip soundDiamod;
     //定義方法
     //語法
     //修飾詞傳回類型 方法名稱
@@ -25,6 +28,9 @@ public class Play : MonoBehaviour
         float h = Input.GetAxisRaw("Horizontal");//（x）軸向水平移動
         r2d.AddForce(new Vector2(speed*h ,0));
         ani.SetBool("奔跑鍵",h!=0); //動畫元件
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) transform.eulerAngles = new Vector3(0, 180, 0);
+        else if(Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) transform.eulerAngles = new Vector3(0, 0, 0);
+
     }
     private void Jump()//跳越
     {
@@ -34,6 +40,8 @@ public class Play : MonoBehaviour
             isGround = false;
             //剛體.推力
             r2d.AddForce(new Vector2(5, jump));
+            //動畫元件:設定觸發器(參數)
+            ani.SetTrigger("跳越觸發");
         }
     }
     private void Dead()//死亡
