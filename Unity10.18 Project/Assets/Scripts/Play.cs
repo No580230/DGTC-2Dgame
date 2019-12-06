@@ -1,5 +1,6 @@
 ﻿
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Play : MonoBehaviour
 {
@@ -18,6 +19,10 @@ public class Play : MonoBehaviour
     [Header("音效區域")]
     public AudioSource aud;
     public AudioClip soundDiamod;
+    [Header("鑽石區域")]
+    public int diamondCurrent;
+    public int diamonTotal;
+    public Text textDiamond;
     //定義方法
     //語法
     //修飾詞傳回類型 方法名稱
@@ -46,7 +51,8 @@ public class Play : MonoBehaviour
     }
     private void Dead()//死亡
     {
-
+        
+        
     }
 
     //添加事件 
@@ -65,5 +71,22 @@ public class Play : MonoBehaviour
         {
             isGround = true;
         }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag=="鑽石")
+        {
+            aud.PlayOneShot(soundDiamod, 1.5f);
+            Destroy(collision.gameObject);
+            diamondCurrent++;
+            textDiamond.text = "鑽石:" + diamondCurrent + "/"+diamonTotal;
+        }
+    }
+
+    //開始事件：播放時執行一次
+    private void Start()
+    {
+        diamonTotal = GameObject.FindGameObjectsWithTag("鑽石").Length;
+        textDiamond.text = "鑽石:0/" + diamonTotal;
     }
 }
